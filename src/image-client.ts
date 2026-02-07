@@ -176,6 +176,7 @@ interface CanvasState {
   layers: CanvasLayer[];
 }
 
+/** Supported raw channel counts accepted by Sharp `raw.channels`. */
 type RawChannels = 1 | 2 | 3 | 4;
 
 const canvases = new Map<string, CanvasState>();
@@ -875,6 +876,8 @@ async function buildImageLayerBuffer(layer: ImageLayer): Promise<Buffer> {
     image = image.rotate(layer.rotate);
   }
 
+  // Sharp composite overlay options do not expose direct per-layer opacity.
+  // To support layer opacity, we attenuate alpha in the layer buffer before compositing.
   if (layer.opacity !== undefined && layer.opacity < 1) {
     const { data, info } = await image
       .ensureAlpha()
@@ -1060,6 +1063,7 @@ async function readRawImage(inputPath: string): Promise<{
   };
 }
 
+/** Normalizes runtime channel count into Sharp's accepted `raw.channels` union. */
 function asRawChannels(channels: number): RawChannels {
   if (channels === 1 || channels === 2 || channels === 3 || channels === 4) return channels;
   throw new Error(`Unsupported raw channel count: ${channels}`);
