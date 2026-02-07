@@ -1,0 +1,43 @@
+Tool: image-editor
+Package: @kazibee/image-editor
+
+Use this tool for local file image editing.
+
+Auth requirements
+- None
+
+Typical intents to map
+- "check image size/format" -> getMetadata(inputPath)
+- "resize" -> resizeImage(inputPath, outputPath, options)
+- "crop" -> cropImage(inputPath, outputPath, { left, top, width, height })
+- "rotate" -> rotateImage(inputPath, outputPath, degrees)
+- "flip horizontal/vertical" -> flopImage / flipImage
+- "convert format" -> convertImage(inputPath, outputPath, { format, quality? })
+- "basic enhancement" -> enhanceImage(inputPath, outputPath)
+
+Code call examples
+```ts
+const meta = await tools["image-editor"].getMetadata("/tmp/photo.png");
+
+const resized = await tools["image-editor"].resizeImage(
+  "/tmp/photo.png",
+  "/tmp/photo-1200.png",
+  { width: 1200, fit: "inside", withoutEnlargement: true }
+);
+
+const cropped = await tools["image-editor"].cropImage(
+  "/tmp/photo.png",
+  "/tmp/photo-crop.png",
+  { left: 100, top: 120, width: 600, height: 400 }
+);
+
+const converted = await tools["image-editor"].convertImage(
+  "/tmp/photo.png",
+  "/tmp/photo.webp",
+  { format: "webp", quality: 80 }
+);
+```
+
+Output behavior
+- Return output path, dimensions, and size.
+- Keep original input untouched unless explicitly requested.
