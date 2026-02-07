@@ -176,6 +176,8 @@ interface CanvasState {
   layers: CanvasLayer[];
 }
 
+type RawChannels = 1 | 2 | 3 | 4;
+
 const canvases = new Map<string, CanvasState>();
 let canvasCounter = 0;
 let layerCounter = 0;
@@ -794,7 +796,6 @@ async function exportCanvas(canvasId: string, outputPath: string): Promise<EditR
         top: Math.round(layer.y),
       };
       if (layer.blend) composite.blend = layer.blend;
-      if (layer.opacity !== undefined) composite.opacity = layer.opacity;
       composites.push(composite);
       continue;
     }
@@ -872,6 +873,30 @@ async function buildImageLayerBuffer(layer: ImageLayer): Promise<Buffer> {
 
   if (layer.rotate) {
     image = image.rotate(layer.rotate);
+  }
+
+  if (layer.opacity !== undefined && layer.opacity < 1) {
+    const { data, info } = await image
+      .ensureAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+
+    const channels = asRawChannels(info.channels);
+    if (channels >= 4) {
+      for (let i = 3; i < data.length; i += channels) {
+        data[i] = Math.round((data[i] ?? 255) * layer.opacity);
+      }
+    }
+
+    return sharp(data, {
+      raw: {
+        width: info.width,
+        height: info.height,
+        channels,
+      },
+    })
+      .png()
+      .toBuffer();
   }
 
   return image.toBuffer();
@@ -1020,7 +1045,7 @@ async function readRawImage(inputPath: string): Promise<{
   data: Uint8Array;
   width: number;
   height: number;
-  channels: number;
+  channels: RawChannels;
 }> {
   const { data, info } = await sharp(inputPath)
     .ensureAlpha()
@@ -1031,8 +1056,13 @@ async function readRawImage(inputPath: string): Promise<{
     data,
     width: info.width,
     height: info.height,
-    channels: info.channels,
+    channels: asRawChannels(info.channels),
   };
+}
+
+function asRawChannels(channels: number): RawChannels {
+  if (channels === 1 || channels === 2 || channels === 3 || channels === 4) return channels;
+  throw new Error(`Unsupported raw channel count: ${channels}`);
 }
 
 function escapeXml(value: string): string {
