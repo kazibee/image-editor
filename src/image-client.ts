@@ -2,6 +2,7 @@ import sharp from 'sharp';
 import { readdir } from 'node:fs/promises';
 import { spawnSync } from 'node:child_process';
 
+/** Basic metadata returned for an image file. */
 export interface ImageInfo {
   format?: string;
   width?: number;
@@ -13,6 +14,7 @@ export interface ImageInfo {
   hasAlpha?: boolean;
 }
 
+/** Resize options for width/height and fit behavior. */
 export interface ResizeOptions {
   width?: number;
   height?: number;
@@ -20,6 +22,7 @@ export interface ResizeOptions {
   withoutEnlargement?: boolean;
 }
 
+/** Absolute pixel crop rectangle. */
 export interface CropOptions {
   left: number;
   top: number;
@@ -27,11 +30,13 @@ export interface CropOptions {
   height: number;
 }
 
+/** Output format conversion options. */
 export interface ConvertOptions {
   format: 'jpeg' | 'png' | 'webp' | 'avif';
   quality?: number;
 }
 
+/** Result information for write/edit operations. */
 export interface EditResult {
   outputPath: string;
   width?: number;
@@ -40,11 +45,13 @@ export interface EditResult {
   format?: string;
 }
 
+/** Installed system font information. */
 export interface FontInfo {
   family: string;
   source: 'fc-list' | 'system-font-dir';
 }
 
+/** RGBA pixel sample at a specific coordinate. */
 export interface PixelColor {
   r: number;
   g: number;
@@ -54,29 +61,34 @@ export interface PixelColor {
   y: number;
 }
 
+/** Color-keying parameters for transparency extraction. */
 export interface ColorKeyOptions {
   color: string | [number, number, number];
   tolerance?: number;
   feather?: number;
 }
 
+/** Chroma key parameters for green/blue screen style removal. */
 export interface ChromaKeyOptions {
   keyColor: string | [number, number, number];
   similarity?: number;
   blend?: number;
 }
 
+/** Automatic edge-based keying options. */
 export interface AutoEdgeKeyOptions {
   tolerance?: number;
   feather?: number;
   sampleStep?: number;
 }
 
+/** Edge detection output options. */
 export interface EdgeDetectOptions {
   threshold?: number;
   invert?: boolean;
 }
 
+/** In-memory canvas descriptor. */
 export interface CanvasInfo {
   canvasId: string;
   width: number;
@@ -85,6 +97,7 @@ export interface CanvasInfo {
   layerCount: number;
 }
 
+/** Text layer style options for canvas composition. */
 export interface TextLayerOptions {
   fontFamily?: string;
   fontSize?: number;
@@ -95,6 +108,7 @@ export interface TextLayerOptions {
   rotate?: number;
 }
 
+/** Placement and transform options for image layers. */
 export interface AddImageLayerOptions {
   x: number;
   y: number;
@@ -132,6 +146,7 @@ export interface AddImageLayerOptions {
     | 'exclusion';
 }
 
+/** Image layer on a canvas. */
 export interface ImageLayer extends AddImageLayerOptions {
   kind: 'image';
   id: string;
@@ -139,6 +154,7 @@ export interface ImageLayer extends AddImageLayerOptions {
   zIndex: number;
 }
 
+/** Text layer on a canvas. */
 export interface TextLayer {
   kind: 'text';
   id: string;
@@ -149,6 +165,7 @@ export interface TextLayer {
   options: TextLayerOptions;
 }
 
+/** Any canvas layer type in draw stack order. */
 export type CanvasLayer = ImageLayer | TextLayer;
 
 interface CanvasState {
@@ -163,6 +180,7 @@ const canvases = new Map<string, CanvasState>();
 let canvasCounter = 0;
 let layerCounter = 0;
 
+/** Creates the image editor client. */
 export function createImageClient() {
   return {
     /** Returns image metadata for a local file. */
