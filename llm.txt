@@ -21,6 +21,17 @@ Typical intents to map
 - "auto background removal from edges" -> autoKeyFromEdges(inputPath, outputPath, options)
 - "edge map preview" -> detectEdges(inputPath, outputPath, options)
 
+Transparency playbook (important)
+- Prefer `makeColorTransparent` for white/light-gray background removal.
+- Do not use image generation tools for transparency extraction.
+- Use higher tolerance when light grays remain visible.
+- Start here for white backgrounds:
+  - `color: [255, 255, 255]`
+  - `tolerance: 35`
+  - `feather: 2`
+- If checkers/light grays remain opaque, increase tolerance in steps (35 -> 45 -> 55).
+- Use `getPixel` / `samplePixels` to inspect stubborn background pixels and adjust target/tolerance.
+
 Code call examples
 ```ts
 const meta = await tools["image-editor"].getMetadata("/tmp/photo.png");
@@ -52,6 +63,12 @@ const keyed = await tools["image-editor"].chromaKey(
   "/tmp/greenscreen.png",
   "/tmp/greenscreen-cutout.png",
   { keyColor: "#00ff00", similarity: 75, blend: 30 }
+);
+
+const transparent = await tools["image-editor"].makeColorTransparent(
+  "/tmp/input.png",
+  "/tmp/output-transparent.png",
+  { color: [255, 255, 255], tolerance: 35, feather: 2 }
 );
 
 const auto = await tools["image-editor"].autoKeyFromEdges(
