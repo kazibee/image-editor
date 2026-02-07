@@ -8,16 +8,27 @@ Auth requirements
 
 Typical intents to map
 - "check image size/format" -> getMetadata(inputPath)
+- "inspect exact color at point" -> getPixel(inputPath, x, y)
+- "sample multiple pixels" -> samplePixels(inputPath, points)
 - "resize" -> resizeImage(inputPath, outputPath, options)
 - "crop" -> cropImage(inputPath, outputPath, { left, top, width, height })
 - "rotate" -> rotateImage(inputPath, outputPath, degrees)
 - "flip horizontal/vertical" -> flopImage / flipImage
 - "convert format" -> convertImage(inputPath, outputPath, { format, quality? })
 - "basic enhancement" -> enhanceImage(inputPath, outputPath)
+- "remove solid background color" -> makeColorTransparent/removeColorBackground
+- "greenscreen/bluescreen" -> chromaKey(inputPath, outputPath, { keyColor, similarity, blend })
+- "auto background removal from edges" -> autoKeyFromEdges(inputPath, outputPath, options)
+- "edge map preview" -> detectEdges(inputPath, outputPath, options)
 
 Code call examples
 ```ts
 const meta = await tools["image-editor"].getMetadata("/tmp/photo.png");
+const px = await tools["image-editor"].getPixel("/tmp/photo.png", 10, 20);
+const samples = await tools["image-editor"].samplePixels("/tmp/photo.png", [
+  { x: 0, y: 0 },
+  { x: 200, y: 50 }
+]);
 
 const resized = await tools["image-editor"].resizeImage(
   "/tmp/photo.png",
@@ -35,6 +46,24 @@ const converted = await tools["image-editor"].convertImage(
   "/tmp/photo.png",
   "/tmp/photo.webp",
   { format: "webp", quality: 80 }
+);
+
+const keyed = await tools["image-editor"].chromaKey(
+  "/tmp/greenscreen.png",
+  "/tmp/greenscreen-cutout.png",
+  { keyColor: "#00ff00", similarity: 75, blend: 30 }
+);
+
+const auto = await tools["image-editor"].autoKeyFromEdges(
+  "/tmp/product.png",
+  "/tmp/product-transparent.png",
+  { tolerance: 45, feather: 24, sampleStep: 10 }
+);
+
+const edges = await tools["image-editor"].detectEdges(
+  "/tmp/product.png",
+  "/tmp/product-edges.png",
+  { threshold: 28, invert: false }
 );
 ```
 
