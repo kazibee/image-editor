@@ -4,6 +4,9 @@
   "type": "module",
   "main": "./src/index.ts",
   "command": "./src/command.ts",
+  "kazibee": {
+    "description": "Edit images with resizing, cropping, background removal, and multi-layer canvas composition."
+  },
   "dependencies": {
     "sharp": "^0.34.4"
   },
