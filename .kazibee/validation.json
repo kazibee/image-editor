@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "validator": {
+    "name": "kazibee",
+    "version": "1"
+  },
+  "package": {
+    "id": "image-editor",
+    "name": "@kazibee/image-editor",
+    "version": "0.1.0"
+  },
+  "artifacts": {
+    "entry": "src/index.ts",
+    "declaration": ".kazibee/index.d.ts",
+    "manual": "llm.txt",
+    "permissions": "permissions.json",
+    "command": "src/command.ts"
+  },
+  "files": [
+    {
+      "path": ".kazibee/index.d.ts",
+      "role": "declaration",
+      "bytes": 5798,
+      "sha256": "ea3c24c5cbd4d25c4a140620b52c278ce768d30cd3927cf96f08681565c3c977"
+    },
+    {
+      "path": "llm.txt",
+      "role": "manual",
+      "bytes": 3104,
+      "sha256": "347621fcbd5ad196770f09cf8274e18add4414ac0ec41bfc6f00198798ef0e4a"
+    },
+    {
+      "path": "package.json",
+      "role": "manifest",
+      "bytes": 948,
+      "sha256": "051cb1fc20391d06f3d552d755cdea1d316d36d44f6afb05a52ed9701ead3471"
+    },
+    {
+      "path": "permissions.json",
+      "role": "permissions",
+      "bytes": 29,
+      "sha256": "929630cfbfadc69f1532188ae7938abe07b89b005a0af62feea4b6c5cb96508b"
+    },
+    {
+      "path": "src/command.ts",
+      "role": "command",
+      "bytes": 268,
+      "sha256": "75d6ba01371b40b905c839e753c75001bbf4a5cef267ff765e60586bebc9aaa4"
+    },
+    {
+      "path": "src/image-client.ts",
+      "role": "source",
+      "bytes": 31088,
+      "sha256": "adc312edf324d302d10c8cfc7c73b3c4511956e63a592604644072f588a4c9fa"
+    },
+    {
+      "path": "src/index.ts",
+      "role": "source",
+      "bytes": 443,
+      "sha256": "f65e00aae3091cc9dfd1b521f4d6d9dcf9210489b18cf2a4e76b6730ad4cac39"
+    }
+  ],
+  "contentDigest": "b65c59a367dc7bd322296d40115f1145c654a7926c59c7aeef977e541bf5bc3e"
+}

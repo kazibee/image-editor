@@ -1,11 +1,30 @@
 {
   "name": "@kazibee/image-editor",
   "version": "0.1.0",
+  "description": "Edit images with resizing, cropping, background removal, and multi-layer canvas composition.",
   "type": "module",
   "main": "./src/index.ts",
+  "types": "./.kazibee/index.d.ts",
   "command": "./src/command.ts",
   "kazibee": {
-    "description": "Edit images with resizing, cropping, background removal, and multi-layer canvas composition."
+    "manifestVersion": 1,
+    "id": "image-editor",
+    "description": "Edit images with resizing, cropping, background removal, and multi-layer canvas composition.",
+    "brief": "Resize, crop, convert, key out backgrounds, and compose multi-layer image canvases locally.",
+    "tags": [
+      "image",
+      "editing",
+      "crop",
+      "resize",
+      "convert",
+      "background-removal",
+      "chroma-key",
+      "canvas",
+      "layers",
+      "text"
+    ],
+    "manual": "./llm.txt",
+    "permissions": "./permissions.json"
   },
   "dependencies": {
     "sharp": "^0.34.4"
