@@ -1,4 +1,12 @@
 {
   "net": [],
-  "env": {}
+  "env": {},
+  "methods": {
+    "getMetadata": { "read": true, "write": false },
+    "getPixel": { "read": true, "write": false },
+    "samplePixels": { "read": true, "write": false },
+    "getCanvas": { "read": true, "write": false },
+    "listLayers": { "read": true, "write": false },
+    "listAvailableFonts": { "read": true, "write": false }
+  }
 }

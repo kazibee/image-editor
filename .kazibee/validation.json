@@ -38,8 +38,8 @@
     {
       "path": "permissions.json",
       "role": "permissions",
-      "bytes": 29,
-      "sha256": "929630cfbfadc69f1532188ae7938abe07b89b005a0af62feea4b6c5cb96508b"
+      "bytes": 368,
+      "sha256": "710d1628d85b5c8d35274b4cc731298dc6cbf35033763b55430eb225b490e568"
     },
     {
       "path": "src/command.ts",
@@ -60,5 +60,5 @@
       "sha256": "f65e00aae3091cc9dfd1b521f4d6d9dcf9210489b18cf2a4e76b6730ad4cac39"
     }
   ],
-  "contentDigest": "b65c59a367dc7bd322296d40115f1145c654a7926c59c7aeef977e541bf5bc3e"
+  "contentDigest": "c4de0bf4ec31bdee46e1029ba6a64342260a75be503769a328aa72c1e1f6f79a"
 }
